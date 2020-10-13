@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Leetcode-排序-冒泡排序</title>
+      <link href="posts/6299afab/"/>
+      <url>posts/6299afab/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>冒泡排序（Bubble Sort）是一种很原始的排序方法，就是通过不断交换“大数”的位置达到排序的目的。因为不断出现“大数”类似于水泡不断出现，因此被形象地称为冒泡算法。</p><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>从一组数列（列表）中挑选一个最大的数，如果这个数列比较小，有可能我们一眼就看出谁最大，但是如果数列比较大，那么就不好确定了，冒泡排序不需要直接找出数列中最大的那个数，只需要在两个数中找出最大的就可以了。</p><p>冒泡算法的原理是比较两个相邻数字的大小，将两个数中比较大的那个数交换到靠后的位置。这样不断交换下去就可以将最大的那个数放到最后的位置，然后从头开始将第二大的数放到倒数第二的位置上，如此反复，知道将数列变成有序数列。</p><p>举例：</p><pre><code>7 3 5 1 9 4</code></pre><h3 id="1-第一轮排序"><a href="#1-第一轮排序" class="headerlink" title="1.第一轮排序"></a>1.第一轮排序</h3><p>第1次排序，按照冒泡排序的原理，比较相邻两个数的大小，从数列头开始第一次比较7和3的大小，7比3大，交换7和3的位置，把7放在靠后的位置。交换的代码为：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> iList[i]&gt;=iList[i+<span class="number">1</span>]</span><br><span class="line">     iList[i],iList[i+<span class="number">1</span>]=iList[i+<span class="number">1</span>],iList[i]</span><br><span class="line"> <span class="comment">#这里你可能会疑惑为什么iList[1]被覆盖了，还能给iList[i+1]赋值，这里为python的序列解包，相关语法可查python官方文档。</span></span><br></pre></td></tr></table></figure><p>交换后如图所示</p><pre><code>3 7 5 1 9 4</code></pre><p>第2次比较7和5的大小，发现7比5大，交换7和5的位置，结果如图：</p><pre><code>3 5 7 1 9 4</code></pre><p>第3次比较7和1的大小，7比1大，交换位置，结果如图：</p><pre><code>3 5 1 7 9 4</code></pre><p>第4次比较7和9的大小，7比9小，不交换位置，结果如图：</p><pre><code>3 5 1 7 9 4</code></pre><p>第5次比较9和4的位置，9比4大，交换位置，结果如下：</p><pre><code>3 5 1 7 4 9</code></pre><p>到此，第一轮排序已经结束，成功序列中最大的值9放入最后的位置。然后再进行下一轮排序。</p><h3 id="2-第二轮排序"><a href="#2-第二轮排序" class="headerlink" title="2.第二轮排序"></a>2.第二轮排序</h3><pre><code>第一次  3 5 1 7 4 9第二次  3 1 5 7 4 9第三次  3 1 5 7 4 9第四次  3 1 5 4 7 9</code></pre><h3 id="3-第三轮排序"><a href="#3-第三轮排序" class="headerlink" title="3.第三轮排序"></a>3.第三轮排序</h3><pre><code>第一次  1 3 5 4 7 9第二次  1 3 5 4 7 9第三次  1 3 4 5 7 9</code></pre><h3 id="4-第四轮排序"><a href="#4-第四轮排序" class="headerlink" title="4.第四轮排序"></a>4.第四轮排序</h3><pre><code>第一次  1 3 4 5 7 9第二次  1 3 4 5 7 9</code></pre><h3 id="5-第五轮排序"><a href="#5-第五轮排序" class="headerlink" title="5.第五轮排序"></a>5.第五轮排序</h3><pre><code>第一次  1 3 4 5 7 9</code></pre><h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>建立无序序列</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#实现创建一个无序的数组,名字为randomList</span></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">randomList</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;返回一个长度为n的整数列表，数据范围[0,1000]&#x27;&#x27;&#x27;</span></span><br><span class="line">    iList = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        iList.append(random.randrange(<span class="number">1000</span>))</span><br><span class="line">    <span class="keyword">return</span> iList</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    iList=randomList(<span class="number">10</span>)</span><br><span class="line">    print(iList)</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>对无序序列进行冒泡排序</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> randomList <span class="keyword">import</span> randomList</span><br><span class="line"><span class="keyword">import</span> timeit</span><br><span class="line"></span><br><span class="line">iList = randomList(<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubbleSort</span>(<span class="params">iList</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;冒泡排序&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> len(iList) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> iList</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(iList)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, len(iList) - <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> iList[j] &gt;= iList[j + <span class="number">1</span>]:  <span class="comment"># 比较相邻两数的大小</span></span><br><span class="line">                iList[j], iList[j + <span class="number">1</span>] = iList[j + <span class="number">1</span>], iList[j]  <span class="comment"># 将较大的数交换到靠后的位置</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> iList</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    print(iList)</span><br><span class="line">    print(bubbleSort(iList))</span><br><span class="line">    print(timeit.timeit(<span class="string">&quot;bubbleSort(iList)&quot;</span>,<span class="string">&quot;from __main__ import bubbleSort,iList&quot;</span>,number=<span class="number">100</span>))<span class="comment">#用bubbleSort函数排序100遍用的时长</span></span><br></pre></td></tr></table></figure><p>整理于2020年10月13日早</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Leetcode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>电力大数据技术框架整理</title>
       <link href="posts/8a1e23b3/"/>
       <url>posts/8a1e23b3/</url>
@@ -13,7 +38,7 @@
       
       <categories>
           
-          <category> 智慧电网 </category>
+          <category> 大数据 </category>
           
       </categories>
       
