@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>知识图谱-汽车品牌知识图谱实战复现记录 | 毛维杨的Blog</title><meta name="keywords" content="知识图谱,neo4j"><meta name="author" content="Voyager-m"><meta name="copyright" content="Voyager-m"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="最近复现了一个汽车品牌知识图谱实战项目，过程中遇到了一些问题，觉得有必要记录一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知识图谱-汽车品牌知识图谱实战复现记录">
+<meta property="og:url" content="http://voyager-m.github.io/posts/45c0910/index.html">
+<meta property="og:site_name" content="毛维杨的Blog">
+<meta property="og:description" content="最近复现了一个汽车品牌知识图谱实战项目，过程中遇到了一些问题，觉得有必要记录一下。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://voyager-m.gitee.io/picgo/cover/KG.png">
+<meta property="article:published_time" content="2020-09-28T13:49:09.000Z">
+<meta property="article:modified_time" content="2020-10-27T03:30:25.977Z">
+<meta property="article:author" content="Voyager-m">
+<meta property="article:tag" content="知识图谱">
+<meta property="article:tag" content="neo4j">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://voyager-m.gitee.io/picgo/cover/KG.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://voyager-m.github.io/posts/45c0910/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-10-27 11:30:25'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="http://voyager-m.gitee.io/picgo/cover/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">10</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">业务需求分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%80%BB%E4%BD%93%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1"><span class="toc-number">3.</span> <span class="toc-text">项目总体框架设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA"><span class="toc-number">4.</span> <span class="toc-text">知识图谱设计方法论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5%EF%BC%9A"><span class="toc-number">5.</span> <span class="toc-text">数据导入：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E7%82%B9%E4%B8%8E%E5%85%B3%E7%B3%BB%E5%88%9B%E5%BB%BA"><span class="toc-number">6.</span> <span class="toc-text">结点与关系创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2%E5%B1%95%E7%A4%BA"><span class="toc-number">7.</span> <span class="toc-text">前端界面展示</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://voyager-m.gitee.io/picgo/cover/KG.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">毛维杨的Blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">知识图谱-汽车品牌知识图谱实战复现记录</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-28T13:49:09.000Z" title="发表于 2020-09-28 21:49:09">2020-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-10-27T03:30:25.977Z" title="更新于 2020-10-27 11:30:25">2020-10-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p><strong>写在前面</strong>：本人也是知识图谱“小白”，正在努力变“怪兽”，写文只为记录成长点滴，若有理解不合理亦或不到位的地方，敬请谅解。</p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p><img src="https://voyager-m.gitee.io/picgo/test/102701.png"></p>
+<p>这里环境配置还是有一些点需要注意的：</p>
+<p>（1）若python版本是3.8以及以上的话是不支持time.clock()这个函数的，需要把这个函数换成time.perf_counter().若不想麻烦，可以考虑将电脑装两个版本的python。</p>
+<p>（2）py2neo的版本不能低于4.0.0，因为4.0.0版本是个分界线，3.x和4.x接口的区别有点大，所以版本必须对应，不然后续会出现一系列问题。</p>
+<p>（3）Neo4j-driver接口为了和前面版本对应应该安装1.6.1版本。</p>
+<h2 id="业务需求分析"><a href="#业务需求分析" class="headerlink" title="业务需求分析"></a>业务需求分析</h2><p>基于搜索引擎的商业数据分析：</p>
+<p>（1）行业分析：整体市场趋势、细分市场趋势</p>
+<p>用户会不断搜索关于汽车某方面的信息，可能是通过品牌搜索，可能是通过车型等等，通过用户的这些行为找出整体的市场趋势，以及细分市场的分析。</p>
+<p>（2）品牌分析：品牌市场份额、品牌粘性、品牌游离度</p>
+<p>用户都在搜什么品牌，搜A品牌的用户又去搜了B品牌（为什么？），用户在搜索这个品牌的时候有没有什么持续性。。</p>
+<p>（3）车系分析：车系市场份额、车系粘性、车系游离度</p>
+<p>（4）车型分析：车型市场份额、车型粘性、车型游离度</p>
+<p>（5）话题分析：热点排行、话题排行</p>
+<p>（6）用户画像：自然属性分析、兴趣属性分布</p>
+<p>我们来看几个例子咯：<br><img src="https://voyager-m.gitee.io/picgo/test/102702.png"><br><img src="https://voyager-m.gitee.io/picgo/test/102703.png"><br><img src="https://voyager-m.gitee.io/picgo/test/102704.png"><br><img src="https://voyager-m.gitee.io/picgo/test/102705.png"></p>
+<h2 id="项目总体框架设计"><a href="#项目总体框架设计" class="headerlink" title="项目总体框架设计"></a>项目总体框架设计</h2><p><img src="https://voyager-m.gitee.io/picgo/test/102706.png"></p>
+<p>项目分为应用层，业务层，数据层，ETL，数据源。</p>
+<p><strong>数据源：</strong>一般获取渠道可以是汽车资讯网站、汽车电商平台、百科问答汽车频道、汽车投书平台。可以使用爬虫技术进行爬取，但要注意的是只能爬取网页公开的数据，遵守法律法规，做良好市民。（否者：爬虫写的好，牢饭吃的早）。</p>
+<p><strong>ETL：</strong>这部分先通过爬虫框架scrapyEx爬取数据，然后经过页面目录管理、页面元素解析、动态页面渲染、页面内容解析、数据清洗转换、批量任务调度，使结点数据结构化和关系数据结构化。</p>
+<p><strong>数据层：</strong>这一层我们首先要将数据导入到neo4j数据库，有两种方式，一种是Neo4j-import,另一种是Neo4j-Web控制台指令导入。这里我比较推荐第二种，因为指令可以让你非常清晰数据源的属性与生成结点或者关系之间的映射关系。</p>
+<p><strong>业务层：</strong>通过py2neo开发框架将数据库与后台联系。然后pythonWeb实现实体识别，节点查询，关系查询，路径计算，上层用Django框架与前端连接，为用户提供交互窗口。</p>
+<p><strong>应用层：</strong>这里主要是该框架的一些应用，比如只能搜索，智能问答，智能推荐等。</p>
+<h2 id="知识图谱设计方法论"><a href="#知识图谱设计方法论" class="headerlink" title="知识图谱设计方法论"></a>知识图谱设计方法论</h2><p><img src="https://voyager-m.gitee.io/picgo/test/102707.png"></p>
+<p>专家法要求参与的人员经验很多，对业务非常熟悉。从上到下，总体规划。</p>
+<p>参照法是以行业标准为参照来进行设计，在设计过程中不断修补裁剪。</p>
+<p>归纳法是由技术过硬的专家来进行的，一般是自下向上，从一个点切入来设计的。</p>
+<p>混合发是从上自下，从下自上同时进行，在中电处进行调整。</p>
+<h2 id="数据导入："><a href="#数据导入：" class="headerlink" title="数据导入："></a>数据导入：</h2><div class="note success simple"><p>数据源必须为utf-8编码，不然结果会乱码。</p>
+<p>修改为utf-8编码办法：笔记本打开csv文件，保存为UTF-8格式</p>
+</div>
+
+<p>&emsp;&emsp;</p>
+<p>打开%NEO4J_HOME%\conf\neo4j.conf</p>
+<p>将#dbms.connectors.default_listen_address=0.0.0.0的#去掉</p>
+<p>&emsp;</p>
+<p>进入 cmd控制台输入指令:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">neo4j.bat console</span><br></pre></td></tr></table></figure>
+<p>出现下图：<br><img src="https://voyager-m.gitee.io/picgo/test/102708.png"></p>
+<p>打开浏览器访问<a target="_blank" rel="noopener" href="http://localhost:7474/">http://localhost:7474/</a></p>
+<p>然后输入数据库用户名和密码（初始密码都是neo4j），登录后也可以自己修改密码，出现如下界面：<br><img src="https://voyager-m.gitee.io/picgo/test/102709.png"></p>
+<p>&emsp;&emsp;</p>
+<p>打开cmd窗扣进入neo4j文件的bin目录下执行以下指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">neo4j-admin import --mode=csv --database=graph.db --nodes ..\import\bank01.csv </span><br></pre></td></tr></table></figure>
+
+<p>我们就完成了数据的导入，下面我们就可以开始创建结点了。</p>
+<h2 id="结点与关系创建"><a href="#结点与关系创建" class="headerlink" title="结点与关系创建"></a>结点与关系创建</h2><p>创建汽车品牌结点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LOAD CSV WITH HEADERS FROM &quot;file:&#x2F;&#x2F;&#x2F;bank01.csv&quot; AS line</span><br><span class="line">CREATE(:Car&#123;name:line.bank,count:line.count&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102710.png"></p>
+<p>&emsp;&emsp;</p>
+<p>创建汽车车系结点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LOAD CSV WITH HEADERS FROM &quot;file:&#x2F;&#x2F;&#x2F;serise.csv&quot; AS line</span><br><span class="line">CREATE(p:Serise&#123;name:line.serise,count:line.count&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102711.png"></p>
+<p>&emsp;&emsp;</p>
+<p>创建关系：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LOAD CSV WITH HEADERS FROM &quot;file:&#x2F;&#x2F;&#x2F;serise.csv&quot; AS line</span><br><span class="line">MATCH (entity1:Car&#123;name:line.bank&#125;),(entity2:Serise&#123;name:line.serise&#125;)</span><br><span class="line">CREATE(entity1)-[:Subtype&#123;type:line.relation&#125;]-&gt;(entity2)</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102712.png"></p>
+<p>&emsp;&emsp;</p>
+<p>指定唯一键：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE  CONSTRAINT ON (b:Car)</span><br><span class="line">ASSERT b.name IS UNIQUE</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102713.png"></p>
+<p>&emsp;&emsp;</p>
+<p>至此，我们完成了206个品牌结点，1921个车系结点，1937个关系的导入</p>
+<p>来看看界面吧：</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102714.png"><br>汽车品牌结点<br>&emsp;<br><img src="https://voyager-m.gitee.io/picgo/test/102715.png"><br>汽车车系结点<br>&emsp;<br><img src="https://voyager-m.gitee.io/picgo/test/102716.png"><br>2127个车系，206个汽车品牌，1921个关系都展现出来了，是不是很壮观呢，哈哈哈哈<br>&emsp;<br><img src="https://voyager-m.gitee.io/picgo/test/102717.png"><br>来个清晰的</p>
+<h2 id="前端界面展示"><a href="#前端界面展示" class="headerlink" title="前端界面展示"></a>前端界面展示</h2><div class="note success simple"><p>先关闭酷狗，因为酷狗会占用“<a target="_blank" rel="noopener" href="http://127.0.0.1:8000/%E2%80%9D%E8%BF%99%E4%B8%AA%E7%AB%AF%E5%8F%A3">http://127.0.0.1:8000/”这个端口</a></p>
+</div>
+
+<p>&emsp;&emsp;</p>
+<p>修改neo4j_models.py中的密码，name和端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def connectDB(self):</span><br><span class="line">		self.graph &#x3D; Graph(&quot;bolt: &#x2F;&#x2F; localhost:7687&quot;, username&#x3D;&quot;neo4j&quot;, password&#x3D;&quot;admin&quot;)</span><br><span class="line">		self.matcher &#x3D; NodeMatcher(self.graph)</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;</p>
+<p>打开cmd窗口执行如下指令保证数据库服务是开着的：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">neo4j.bat console</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;</p>
+<p>打开cmd窗口进入kgcar项目目录下运行如下指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;</p>
+<p>功能界面如下：<br><img src="https://voyager-m.gitee.io/picgo/test/102718.png"><br><img src="https://voyager-m.gitee.io/picgo/test/102719.png"></p>
+<p>&emsp;&emsp;</p>
+<p>对不起，这个例子我举的有点飘了，哈哈哈哈</p>
+<p>特别感谢：张子良老师的知识图谱教程</p>
+<p>整理于2020年10月27日</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Voyager-m</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://voyager-m.github.io/posts/45c0910/">http://voyager-m.github.io/posts/45c0910/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Voyager-m.github.io" target="_blank">毛维杨的Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a><a class="post-meta__tags" href="/tags/neo4j/">neo4j</a></div><div class="post_share"><div class="social-share" data-image="https://voyager-m.gitee.io/picgo/cover/KG.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward01.png" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward01.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/8a1e23b3/"><img class="prev-cover" src="https://Voyager-m.gitee.io/picgo/cover/power.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">电力大数据技术框架整理</div></div></a></div><div class="next-post pull-right"><a href="/posts/ac2a99b3/"><img class="next-cover" src="https://voyager-m.gitee.io/picgo/cover/KG.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">知识图谱初识-知识图谱与语义技术简介</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/ac2a99b3/" title="知识图谱初识-知识图谱与语义技术简介"><img class="cover" src="https://voyager-m.gitee.io/picgo/cover/KG.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-28</div><div class="title">知识图谱初识-知识图谱与语义技术简介</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Voyager-m</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const initData = {
+      el: '#vcomment',
+      appId: 'DE1aONvemsNlJ68Ulgwiu94c-gzGzoHsz',
+      appKey: 'y03Dyd3L8q4s7hSc9CUpoHQh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script></div></body></html>
