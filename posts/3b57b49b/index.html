@@ -1,0 +1,294 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>知识图谱-neo4j入门 | 毛维杨的Blog</title><meta name="keywords" content="知识图谱,neo4j"><meta name="author" content="Voyager-m"><meta name="copyright" content="Voyager-m"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="neo4j入门，主要是安装、环境配置，和一些主要的Cypher Query Language语句。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知识图谱-neo4j入门">
+<meta property="og:url" content="http://voyager-m.github.io/posts/3b57b49b/index.html">
+<meta property="og:site_name" content="毛维杨的Blog">
+<meta property="og:description" content="neo4j入门，主要是安装、环境配置，和一些主要的Cypher Query Language语句。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://voyager-m.gitee.io/picgo/cover/KG.png">
+<meta property="article:published_time" content="2020-09-28T13:49:09.000Z">
+<meta property="article:modified_time" content="2020-10-28T14:00:30.967Z">
+<meta property="article:author" content="Voyager-m">
+<meta property="article:tag" content="知识图谱">
+<meta property="article:tag" content="neo4j">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://voyager-m.gitee.io/picgo/cover/KG.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://voyager-m.github.io/posts/3b57b49b/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-10-28 22:00:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="http://voyager-m.gitee.io/picgo/cover/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">12</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">10</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81JDK%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">1、JDK环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81neo4j%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">2、neo4j环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%90%AF%E5%8A%A8neo4j%E7%9C%8B%E7%9C%8B"><span class="toc-number">3.</span> <span class="toc-text">3.启动neo4j看看</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81Cypher-Query-Language%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">3、Cypher Query Language简单操作</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://voyager-m.gitee.io/picgo/cover/KG.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">毛维杨的Blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">知识图谱-neo4j入门</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-28T13:49:09.000Z" title="发表于 2020-09-28 21:49:09">2020-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-10-28T14:00:30.967Z" title="更新于 2020-10-28 22:00:30">2020-10-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p><strong>什么是知识图谱？</strong></p>
+<p><strong>有人的地方就会有江湖</strong></p>
+<p><strong>江湖不是打打杀杀</strong></p>
+<p><strong>而是人情世故</strong></p>
+<p><strong>人情世故就是各种关系嘛</strong></p>
+<p><strong>人情世故通常都是文本数据</strong></p>
+<p><strong>在海量数据中将各种各样的关系抽出来</strong></p>
+<p><strong>那我，我们怎么存储这些关系</strong></p>
+<p><strong>普通的数据库，当然不行了</strong></p>
+<p><strong>因为不够直观嘛</strong></p>
+<p><strong>所以我们就有了神器——neo4j</strong></p>
+<p><strong>neo4j是一种图形化数据库，能让人很直观看出各实体之间的关系。</strong></p>
+<h2 id="1、JDK环境配置"><a href="#1、JDK环境配置" class="headerlink" title="1、JDK环境配置"></a>1、JDK环境配置</h2><p>很多人电脑上本来就有jdk，但是很抱歉，neo4j很矫情，它对JDK版本有要求，所以最好卸载原有的JDk，安装最新版本的JDk。</p>
+<p>JDK安装：<a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase-downloads.html">https://www.oracle.com/java/technologies/javase-downloads.html</a></p>
+<p>直接无脑下载后点下一步就ok了。</p>
+<hr>
+<p>我的电脑，右键-&gt;属性-&gt;高级系统设置-&gt;环境变量</p>
+<hr>
+<p>系统变量-&gt;新建  </p>
+<p>变量名：JAVA_HOME</p>
+<p>变量值：C:\Program Files\Java\jdk1.8.0_152（以安装路径为主）</p>
+<hr>
+<p>系统变量-&gt;新建</p>
+<p>变量名：CLASSPATH</p>
+<p>变量值： .;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar;  （注意符号，建议直接复制粘贴）</p>
+<hr>
+<p>系统变量-&gt;编辑</p>
+<p>找到Path选项：</p>
+<p>变量名：Path </p>
+<p>变量值：点击新建，将  %JAVA_HOME%\bin 填进去（注意符号，建议直接复制粘贴）<br>变量值：点击新建，将  %JAVA_HOME%\jre\bin 填进去（注意符号，建议直接复制粘贴）</p>
+<p>至此完成配置。</p>
+<hr>
+<p>按Win+R组合键打开“运行”，输入cmd进入dos界面，输入java -version</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102801.png"></p>
+<p>若出现这个图就表明成功啦！</p>
+<h2 id="2、neo4j环境配置"><a href="#2、neo4j环境配置" class="headerlink" title="2、neo4j环境配置"></a>2、neo4j环境配置</h2><p>Neo4j安装：<a target="_blank" rel="noopener" href="https://neo4j.com/download-center/">https://neo4j.com/download-center/</a></p>
+<p>官网下载，然后无脑下一步安装</p>
+<hr>
+<p>我的电脑，右键-&gt;属性-&gt;高级系统设置-&gt;环境变量</p>
+<hr>
+<p>系统变量-&gt;新建</p>
+<p>变量名：NEO4J_HOME</p>
+<p>变量值： C:\neo4j-community-4.1.3</p>
+<hr>
+<p>系统变量-&gt;编辑</p>
+<p>找到Path选项：</p>
+<p>变量名：Path </p>
+<p>变量值：点击新建，将  %NEO4J_HOME%\bin  填进去</p>
+<p>至此完成配置。</p>
+<hr>
+<p>按Win+R组合键打开“运行”，输入cmd进入dos界面，输入neo4j</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102802.png"></p>
+<p>若出现这个图就表明成功啦！</p>
+<p>本人已与百度合作，若以上配置过程看不懂或者有问题，可尝试百度搜索“xxx安装配置教程”即可。</p>
+<h2 id="3-启动neo4j看看"><a href="#3-启动neo4j看看" class="headerlink" title="3.启动neo4j看看"></a>3.启动neo4j看看</h2><p>按Win+R组合键打开“运行”，输入cmd进入dos界面，输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">neo4j.bat console</span><br></pre></td></tr></table></figure>
+<p>出现如下界面表示成功启动</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102803.png"></p>
+<p>图中红方框就就是访问地址</p>
+<p>打开浏览器输入：<a target="_blank" rel="noopener" href="http://localhost:7474/">http://localhost:7474/</a></p>
+<p>第一次登录的<strong>用户名</strong>和<strong>密码</strong>都是neo4j，登录成功后可以修改密码。</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102804.png"></p>
+<p>请看上面这张图：点开1位置的小星星，然后点击下面的Movie Graph（这是neo4j自带的演示知识图谱），然后我们会看到3位置自动出现了一行指令，然后点击4位置的小三角板，我们会得到5位置的界面，然后我们可以点击6位置的翻页，下面的每一页都会介绍neo4j的Cypher Query Language语句。</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102805.png"></p>
+<p>将页面翻到第2页，点击1位置的任意地方，我们能看到2位置的方框内自动出现了一堆指令，然后点击3位置的小三角，我们可以得到下图：</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102806.png"></p>
+<p>来解释下这个图哈，这个图中有9个person标签，8个movie标签，8个acted_in关系和10个directed关系。比如Tom Hanks演了8个电影。</p>
+<p>至此，演示例子都看完啦，我只演示了第2页的指令，其他页的指令会简单的把Cypher Query Language都做一遍介绍，可自行琢磨，想系统学习Cypher Query Language可以去w3cschool看neo4j教程。</p>
+<h2 id="3、Cypher-Query-Language简单操作"><a href="#3、Cypher-Query-Language简单操作" class="headerlink" title="3、Cypher Query Language简单操作"></a>3、Cypher Query Language简单操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">增：</span><br><span class="line">增加一个节点</span><br><span class="line">create(n:Person&#123;name:&#39;毛同学&#39;,age:5&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102807.png"></p>
+<p>解释一下：n相当于一个别名，Person是我们定义的标签名字，大括号里面是属性，这里我们创建了名字name和年龄age两个属性，值分别为‘毛同学’和5。</p>
+<p>图中点击毛同学这个圆圈，可以看到左下角显示这个实体的id号和属性以及属性值。</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">带有关系属性</span><br><span class="line">create (p:Person&#123;name:&quot;毛同学&quot;,age:&quot;5&quot;&#125;)-[:是一个&#123;负债:10000&#125;]-&gt;(n:Person&#123;name:&quot;穷人&quot;,age:&quot;5&quot;&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102808.png"></p>
+<p>解释一下：这个语句的前面和后面一部分其实就是创建实体的语句，主要是中间的，”：”后面的代表这个关系的名称，大括号里面的表示这个关系的属性。</p>
+<p>图中点击1位置的关系，我们可以看到2位置的关系属性。</p>
+<p>这个图的意思就是说：<font color=#008000>毛同学是一个穷人！（负债10000）</font>（这是个悲伤的故事）</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">删：</span><br><span class="line">create (n:Person &#123;name:&#39;MWY&#39;,age:20&#125;)</span><br><span class="line">match (n:Person&#123;name:&quot;MWY&quot;&#125;) delete n</span><br></pre></td></tr></table></figure>
+<p>解释一下：这两句话是先创建了一个结点又删除了一个结点。其中删除语句中的n代表一个别名，相当于一个返回值，意思是在Person标签中查找name为”MWY”的返回给n，后面”delete n”代表删除n（就是查到的结点）这个结点。（注意：要删除点，必须先删除关系，不然不能删除）</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">删除关系</span><br><span class="line">match (p:Person&#123;name:&quot;毛同学&quot;,age:&quot;5&quot;&#125;)-[f:是一个]-&gt;(n:Person&#123;name:&quot;穷人&quot;,age:&quot;5&quot;&#125;) delete f</span><br></pre></td></tr></table></figure>
+<p>解释一下：删除关系语句中的前面部分和后面部分应该都能懂了，中间这部分，是把f当成一个返回值，查找到”是一个”这个关系后返回给f，后面的”delete f”代表把这个关系删除了，当然也可以变成”delete p,f,n”，这表示把两个结点和它们的关系都删掉了。</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">改：</span><br><span class="line">加上标签：</span><br><span class="line">match (t:Person) where id(t)&#x3D;0 set t:好人 return t</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102809.png"></p>
+<p>解释一下：首先match是查找的意思，t接收找到的id为0的结点，set表示增加的意思，意思是把id为0的标签为person的结点增加一个”好人”标签。</p>
+<p>图中点击1位置的关系，我们可以看到2位置的标签变成了两个。</p>
+<p>这个图的意思就是说：<font color=#008000>毛同学是一个人！且是个好人！</font>（挺不好意思的）</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">改：</span><br><span class="line">加上属性</span><br><span class="line">match (a:好人) where id(a)&#x3D;0  set a.颜值&#x3D;200  return a</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102810.png"></p>
+<p>解释一下：首先match是查找的意思，a接收找到的id为0的结点，set表示增加的意思，意思是把id为0的标签为”好人”的结点增加一个”颜值”属性，值为200。</p>
+<p>这个图的意思就是说：<font color=#008000>同学是一个人！且是个好人！他的颜值为200</font>（不接受反驳）</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">改：</span><br><span class="line">修改属性</span><br><span class="line">match (a:好人) where id(a)&#x3D;0  set a.颜值&#x3D;500  return a</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/102811.png"></p>
+<p>解释一下：首先match是查找的意思，a接收找到的id为0的结点，set表示修改的意思，意思是把id为0的标签为”好人”的结点的”颜值”属性改为500。</p>
+<p>这个图的意思就是说：<font color=#008000>毛同学是一个人！且是个好人！200都已经不能够表示他的颜值，500才能勉强表示</font>（我有点飘）</p>
+<hr>
+<p>如果你想清空数据库那么：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">快速清空数据库：</span><br><span class="line">MATCH (n)</span><br><span class="line">DETACH DELETE n</span><br></pre></td></tr></table></figure>
+
+<p>解释一下：n，表示的是一个别名，后面一句表示清空n，也就是清空数据库。</p>
+<p>这就是我们常说的<font color=#008000>“删库跑路”</font>一句中的删库指令。（温馨提示：慎用）</p>
+<p>若想交流，加qq：1518887260</p>
+<p>整理于2020年10月28日</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Voyager-m</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://voyager-m.github.io/posts/3b57b49b/">http://voyager-m.github.io/posts/3b57b49b/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Voyager-m.github.io" target="_blank">毛维杨的Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a><a class="post-meta__tags" href="/tags/neo4j/">neo4j</a></div><div class="post_share"><div class="social-share" data-image="https://voyager-m.gitee.io/picgo/cover/KG.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward01.png" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward01.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/ac2a99b3/"><img class="prev-cover" src="https://voyager-m.gitee.io/picgo/cover/KG.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">知识图谱初识-知识图谱与语义技术简介</div></div></a></div><div class="next-post pull-right"><a href="/posts/c37fef3/"><img class="next-cover" src="https://Voyager-m.gitee.io/picgo/cover/Git.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">如何将本地项目上传gitee/github</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/45c0910/" title="知识图谱-汽车品牌知识图谱实战复现记录"><img class="cover" src="https://voyager-m.gitee.io/picgo/cover/KG.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-28</div><div class="title">知识图谱-汽车品牌知识图谱实战复现记录</div></div></a></div><div><a href="/posts/ac2a99b3/" title="知识图谱初识-知识图谱与语义技术简介"><img class="cover" src="https://voyager-m.gitee.io/picgo/cover/KG.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-28</div><div class="title">知识图谱初识-知识图谱与语义技术简介</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Voyager-m</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const initData = {
+      el: '#vcomment',
+      appId: 'DE1aONvemsNlJ68Ulgwiu94c-gzGzoHsz',
+      appKey: 'y03Dyd3L8q4s7hSc9CUpoHQh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script></div></body></html>
