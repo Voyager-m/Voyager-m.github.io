@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GO-知名编程语言或系统的发展简史 | 毛维杨的Blog</title><meta name="keywords" content="GO"><meta name="author" content="Voyager-m"><meta name="copyright" content="Voyager-m"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="目前一些知名编程语言的发展史。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO-知名编程语言或系统的发展简史">
+<meta property="og:url" content="http://voyager-m.github.io/posts/a7360fd9/index.html">
+<meta property="og:site_name" content="毛维杨的Blog">
+<meta property="og:description" content="目前一些知名编程语言的发展史。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://Voyager-m.gitee.io/picgo/cover/go.png">
+<meta property="article:published_time" content="2020-09-28T13:49:09.000Z">
+<meta property="article:modified_time" content="2020-11-15T06:24:10.101Z">
+<meta property="article:author" content="Voyager-m">
+<meta property="article:tag" content="GO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://Voyager-m.gitee.io/picgo/cover/go.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://voyager-m.github.io/posts/a7360fd9/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-11-15 14:24:10'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="http://voyager-m.gitee.io/picgo/cover/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">14</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%A5%E5%90%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E6%88%96%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8F%91%E5%B1%95%E7%AE%80%E5%8F%B2"><span class="toc-number">1.</span> <span class="toc-text">知名编程语言或系统的发展简史</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81B%E8%AF%AD%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">一、B语言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81C%E8%AF%AD%E8%A8%80"><span class="toc-number">1.2.</span> <span class="toc-text">二、C语言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Unix%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.3.</span> <span class="toc-text">三、Unix系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81C-%E8%AF%AD%E8%A8%80"><span class="toc-number">1.4.</span> <span class="toc-text">四、C++语言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81Python%E8%AF%AD%E8%A8%80"><span class="toc-number">1.5.</span> <span class="toc-text">五、Python语言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81Java%E8%AF%AD%E8%A8%80"><span class="toc-number">1.6.</span> <span class="toc-text">六、Java语言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81JavaScript%E8%AF%AD%E8%A8%80"><span class="toc-number">1.7.</span> <span class="toc-text">七、JavaScript语言</span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://Voyager-m.gitee.io/picgo/cover/go.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">毛维杨的Blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">GO-知名编程语言或系统的发展简史</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-28T13:49:09.000Z" title="发表于 2020-09-28 21:49:09">2020-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-15T06:24:10.101Z" title="更新于 2020-11-15 14:24:10">2020-11-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GO/">GO</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="知名编程语言或系统的发展简史"><a href="#知名编程语言或系统的发展简史" class="headerlink" title="知名编程语言或系统的发展简史"></a>知名编程语言或系统的发展简史</h1><h2 id="一、B语言"><a href="#一、B语言" class="headerlink" title="一、B语言"></a>一、B语言</h2><p>B语言之父：Ken Thompson（肯.汤普森）。B语言是贝尔实验室开发的一种通用的程序设计语言，它是于1969年前后Ken Thompson（肯.汤普森）在Dennis Ritchie丹尼斯.里奇（Dennis Ritchie）的支持下设计出来。该语言得名于汤姆森的妻子Bonnie，它是一门开发于60年代中期的语言，现在使用者已经很少了。</p>
+<p><img src="http://7xtcwd.com1.z0.glb.clouddn.com/KenThompson.jpg" alt="Ken Thompson"></p>
+<h2 id="二、C语言"><a href="#二、C语言" class="headerlink" title="二、C语言"></a>二、C语言</h2><p>C语言之父：Dennis Ritchie（丹尼斯·里奇）。美国著名计算机专家、C语言发明人、UNIX之父。在1969-1973年期间发明了C语言和Unix操作系统。</p>
+<p>到了70年代，诞生了一门非常重要的语言，这就是今天的大名鼎鼎的C语言。而C语言之父是美国著名的计算机专家。丹尼斯.利奇。<br>在开发C语言的时候其实是以B语言为基础。之所以发明C语言，实际上是因为这两个人，刚刚的B语言之父肯.汤普森和丹尼斯.里奇，一块写了一个操作系统，就是Unix系统。在写Unix系统的过程中，需要一种便利的语言，而B语言又达不到这个要求，所以丹尼斯.里奇就在B语言上进行改造，发明了C语言。目前 C语言是世界上最常用的程序语言之一。自从被C语言取代之后，B语言几乎已遭弃置。</p>
+<p><img src="http://7xtcwd.com1.z0.glb.clouddn.com/dannis.jpg" alt="dannis"></p>
+<h2 id="三、Unix系统"><a href="#三、Unix系统" class="headerlink" title="三、Unix系统"></a>三、Unix系统</h2><p>Unix之父：Dennis Ritchie（丹尼斯·里奇）及Ken Thompson（肯.汤普森）</p>
+<p>提到C语言就不得不说一下Unix系统。而Unix之父，自然就是这两个人，左侧这个是B语言之父肯汤姆森。右侧这个是C语言之父丹尼斯.里奇。有意思的是，肯.汤普森当年开发 Unix的初衷是运行他编写的一款计算机游戏 Space Travel，这款游戏模拟太阳系天体运动，由玩家驾驶飞船，观赏景色并尝试在各种行星和月亮上登陆。他先后在多个系统上试验，但运行效果不甚理想，于是决定自己开发操作系统，就这样，Unix 诞生了。英文中的前缀 Uni 是小的意思，小而且巧。这是 Unix 的设计初衷，这个理念也一直影响至今。<br>因为他们俩在1973年左右的时候发明了Unix操作系统，也因此获得了1983年的图灵大奖。这个奖项就相当于IT行业的诺贝尔奖。</p>
+<p><img src="http://7xtcwd.com1.z0.glb.clouddn.com/WX20190322-173439.png" alt="WX20190322-173439"></p>
+<h2 id="四、C-语言"><a href="#四、C-语言" class="headerlink" title="四、C++语言"></a>四、C++语言</h2><p>C++之父：Bjarne Stroustrup（本贾尼·斯特劳斯特卢普）。1982年，美国贝尔实验室的Bjarne Stroustrup博士在C语言的基础上引入并扩充了面向对象的概念，发明了—种新的程序语言。为了表达该语言与c语言的渊源关系，它被命名为C++。</p>
+<p><img src="http://7xtcwd.com1.z0.glb.clouddn.com/BjarneStroustrup.jpg" alt="Bjarne Stroustrup"></p>
+<h2 id="五、Python语言"><a href="#五、Python语言" class="headerlink" title="五、Python语言"></a>五、Python语言</h2><p>Python之父：Guido van Rossum（吉多.范.罗苏姆）。1989年，为了打发圣诞节假期，Guido开始写Python语言的编译/解释器。1994年发布1.0版本。1995年9月发布了Python3.5版。</p>
+<p>python语言的理念就是：人生苦短，我用python。吉多推崇的是简洁，大方，美观，精致。吉多一直认为python是一门很优秀的语言，实际上python也确实是可以做各个行业，无论是web开发，还是服务器端维护，还有爬虫等等，但是在每个方向上都没有做到最精，所以在某些地方没有得到很大的体现。但是吉多一直认为酒香不怕巷子深，所以也没有大力的宣传。但是近几年随着人工智能也被大众所熟知。</p>
+<p><img src="http://7xtcwd.com1.z0.glb.clouddn.com/GuidovanRossum.png" alt="Guido van Rossum"></p>
+<h2 id="六、Java语言"><a href="#六、Java语言" class="headerlink" title="六、Java语言"></a>六、Java语言</h2><p>Java之父是James Gosling（詹姆斯.高斯林）。1991年开发Oak，1994年更名为Java。1995年5月正式发布。</p>
+<p>实际上python比java的产生还要更早一点。java的出现，正是互联网大力兴起的时候，而java因为语言的特性，在互联网上有很大的优势，发布最初就异常火爆，掩盖住了python的势头。java最初的模型是在1991年的时候开发出，他的创始人詹姆斯高斯林。那个时候还叫做Oak橡树，后来詹姆斯希望使用java语言可以像喝咖啡一样轻松，愉悦。改名为java。</p>
+<p><img src="http://7xtcwd.com1.z0.glb.clouddn.com/JamesGosling.jpg" alt="James Gosling"></p>
+<h2 id="七、JavaScript语言"><a href="#七、JavaScript语言" class="headerlink" title="七、JavaScript语言"></a>七、JavaScript语言</h2><p>Javascript之父是Brendan Eich（布兰登.艾奇)。JavaScript，是一门运行在浏览器端的脚本语言。这门语言是由网景公司在1995年发布的。当时网景公司主要是做浏览器方面，他们想把java语言应用在浏览器端，能够实现一些比如用户登录并验证的工作。招聘了一个新员工，叫做布兰登.艾奇，布兰登对java没有兴趣，为了应付公司的任务，只用了10天时间就设计出了JavaScript这门语言。但是JavaScript发展至今，随着前端开发异常的火爆，它已经是浏览器端的龙头语言了。</p>
+<p><img src="http://7xtcwd.com1.z0.glb.clouddn.com/BrendanEich.jpg" alt="Brendan Eich"></p>
+<p>8、Golang：Go的三个作者分别是： Rob Pike（罗伯.派克），Ken Thompson（肯.汤普森）和Robert Griesemer（罗伯特.格利茨默）</p>
+<p><img src="http://7xtcwd.com1.z0.glb.clouddn.com/aa.jpg" alt="aa"></p>
+<div class="note success simple"><p>整理此博客只为方便往后翻阅复习，侵删。</p>
+</div>
+
+
+
+
+
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Voyager-m</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://voyager-m.github.io/posts/a7360fd9/">http://voyager-m.github.io/posts/a7360fd9/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Voyager-m.github.io" target="_blank">毛维杨的Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/GO/">GO</a></div><div class="post_share"><div class="social-share" data-image="https://Voyager-m.gitee.io/picgo/cover/go.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward01.png" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward01.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/35af54d9/"><img class="prev-cover" src="https://Voyager-m.gitee.io/picgo/cover/datastruct.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Leetcode-排序-选择排序</div></div></a></div><div class="next-post pull-right"><a href="/posts/6299afab/"><img class="next-cover" src="https://Voyager-m.gitee.io/picgo/cover/datastruct.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Leetcode-排序-冒泡排序</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Voyager-m</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const initData = {
+      el: '#vcomment',
+      appId: 'DE1aONvemsNlJ68Ulgwiu94c-gzGzoHsz',
+      appKey: 'y03Dyd3L8q4s7hSc9CUpoHQh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script></div></body></html>
