@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GO-4-go语言的优势 | 毛维杨的Blog</title><meta name="keywords" content="GO"><meta name="author" content="Voyager-m"><meta name="copyright" content="Voyager-m"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="本文通过go与其他语言的对比来说明go语言有哪些优势">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO-4-go语言的优势">
+<meta property="og:url" content="http://voyager-m.github.io/posts/60128ef3/index.html">
+<meta property="og:site_name" content="毛维杨的Blog">
+<meta property="og:description" content="本文通过go与其他语言的对比来说明go语言有哪些优势">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://Voyager-m.gitee.io/picgo/cover/go.png">
+<meta property="article:published_time" content="2020-09-28T13:49:09.000Z">
+<meta property="article:modified_time" content="2020-11-15T07:32:22.332Z">
+<meta property="article:author" content="Voyager-m">
+<meta property="article:tag" content="GO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://Voyager-m.gitee.io/picgo/cover/go.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://voyager-m.github.io/posts/60128ef3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-11-15 15:32:22'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="http://voyager-m.gitee.io/picgo/cover/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">17</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go%E8%AF%AD%E8%A8%80%E5%92%8C%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="toc-number">1.</span> <span class="toc-text">Go语言和其他语言的对比</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Go%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1%E5%88%9D%E8%A1%B7"><span class="toc-number">1.1.</span> <span class="toc-text">一、Go语言设计初衷</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Go%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text">二、Go语言的优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AF%B9%E6%AF%94%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80"><span class="toc-number">1.3.</span> <span class="toc-text">三、对比其他语言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java"><span class="toc-number">1.3.1.</span> <span class="toc-text">Java</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c"><span class="toc-number">1.3.2.</span> <span class="toc-text">c#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-C"><span class="toc-number">1.3.3.</span> <span class="toc-text">C&#x2F;C++</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Javascript"><span class="toc-number">1.3.4.</span> <span class="toc-text">Javascript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python"><span class="toc-number">1.3.5.</span> <span class="toc-text">Python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scala"><span class="toc-number">1.3.6.</span> <span class="toc-text">scala</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go"><span class="toc-number">1.3.7.</span> <span class="toc-text">Go</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%9C%80%E5%90%8E"><span class="toc-number">1.4.</span> <span class="toc-text">四、最后</span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://Voyager-m.gitee.io/picgo/cover/go.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">毛维杨的Blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">GO-4-go语言的优势</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-28T13:49:09.000Z" title="发表于 2020-09-28 21:49:09">2020-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-15T07:32:22.332Z" title="更新于 2020-11-15 15:32:22">2020-11-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GO/">GO</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="Go语言和其他语言的对比"><a href="#Go语言和其他语言的对比" class="headerlink" title="Go语言和其他语言的对比"></a>Go语言和其他语言的对比</h1><h2 id="一、Go语言设计初衷"><a href="#一、Go语言设计初衷" class="headerlink" title="一、Go语言设计初衷"></a>一、Go语言设计初衷</h2><p>1、设计Go语言是为了解决当时Google开发遇到的问题：</p>
+<ul>
+<li>大量的C++代码，同时又引入了Java和Python</li>
+<li>成千上万的工程师</li>
+<li>数以万计行的代码</li>
+<li>分布式的编译系统</li>
+<li>数百万的服务器</li>
+</ul>
+<p>2、Google开发中的痛点：</p>
+<ul>
+<li>编译慢</li>
+<li>失控的依赖</li>
+<li>每个工程师只是用了一个语言里面的一部分</li>
+<li>程序难以维护（可读性差、文档不清晰等）</li>
+<li>更新的花费越来越长</li>
+<li>交叉编译困难</li>
+</ul>
+<p>3、如何解决当前的问题和痛点？</p>
+<ul>
+<li><p>Go希望成为互联网时代的C语言。多数系统级语言（包括Java和C#）的根本编程哲学来源于C++，将C++的面向对象进一步发扬光大。但是Go语言的设计者却有不同的看法，他们认为值得学习的是C语言。C语言经久不衰的根源是它足够简单。因此，Go语言也是足够简单。</p>
+</li>
+<li><p>所以，他们当时设计Go的目标是为了消除各种缓慢和笨重、改进各种低效和扩展性。Go是由那些开发大型系统的人设计的，同时也是为了这些人服务的；它是为了解决工程上的问题，不是为了研究语言设计；它还是为了让我们的编程变得更舒适和方便。</p>
+</li>
+<li><p>但是结合Google当时内部的一些现实情况，如很多工程师都是C系的，所以新设计的语言一定要易学习，最好是类似C的语言；20年没有出新的语言了，所以新设计的语言必须是现代化的（例如内置GC）等情况。最后根据实战经验，他们向着目标设计了Go这个语言。</p>
+</li>
+</ul>
+<p>4、Go语言的特色：</p>
+<ul>
+<li>没有继承多态的面向对象</li>
+<li>强一致类型</li>
+<li>interface不需要显式声明(Duck Typing)</li>
+<li>没有异常处理(Error is value)</li>
+<li>基于首字母的可访问特性</li>
+<li>不用的import或者变量引起编译错误</li>
+<li>完整而卓越的标准库包</li>
+<li>Go内置runtime（作用是性能监控、垃圾回收等）</li>
+</ul>
+<h2 id="二、Go语言的优势"><a href="#二、Go语言的优势" class="headerlink" title="二、Go语言的优势"></a>二、Go语言的优势</h2><p>1、学习曲线容易</p>
+<p>​    Go语言语法简单，包含了类C语法。因为Go语言容易学习，所以一个普通的大学生花几个星期就能写出来可以上手的、高性能的应用。在国内大家都追求快，这也是为什么国内Go流行的原因之一。</p>
+<p>​    <img src="http://7xtcwd.com1.z0.glb.clouddn.com/go2.png" alt="go2"></p>
+<blockquote>
+<p>Go 语言的语法特性简直是太简单了，简单到你几乎玩不出什么花招，直来直去的，学习曲线很低，上手非常快。</p>
+</blockquote>
+<p>2、效率：快速的编译时间，开发效率和运行效率高</p>
+<p>​    开发过程中相较于 Java 和 C++呆滞的编译速度，Go 的快速编译时间是一个主要的效率优势。Go拥有接近C的运行效率和接近PHP的开发效率。</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/golang2.png"></p>
+<p>C 语言的理念是信任程序员，保持语言的小巧，不屏蔽底层且底层友好，关注语言的执行效率和性能。而 Python 的姿态是用尽量少的代码完成尽量多的事。于是我能够感觉到，Go 语言想要把 C 和 Python 统一起来，这是多棒的一件事啊。</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/go3.png" alt="go3"></p>
+<p>3、出身名门、血统纯正</p>
+<p>​    之所以说Go出身名门，从Go语言的创造者就可见端倪，Go语言绝对血统纯正。其次Go语言出自Google公司，Google在业界的知名度和实力自然不用多说。Google公司聚集了一批牛人，在各种编程语言称雄争霸的局面下推出新的编程语言，自然有它的战略考虑。而且从Go语言的发展态势来看，Google对它这个新的宠儿还是很看重的，Go自然有一个良好的发展前途。</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/qinerzi_meitu_1.jpg"></p>
+<p>4、自由高效：组合的思想、无侵入式的接口</p>
+<p>​    Go语言可以说是开发效率和运行效率二者的完美融合，天生的并发编程支持。Go语言支持当前所有的编程范式，包括过程式编程、面向对象编程、面向接口编程、函数式编程。程序员们可以各取所需、自由组合、想怎么玩就怎么玩。</p>
+<p>​    </p>
+<p>5、强大的标准库</p>
+<p>​    这包括互联网应用、系统编程和网络编程。Go里面的标准库基本上已经是非常稳定了，特别是我这里提到的三个，网络层、系统层的库非常实用。<strong>Go 语言的 lib 库麻雀虽小五脏俱全。</strong>Go 语言的 lib 库中基本上有绝大多数常用的库，虽然有些库还不是很好，但我觉得不是问题，因为我相信在未来的发展中会把这些问题解决掉。</p>
+<p>6、部署方便：二进制文件，Copy部署</p>
+<p>​    这一点是很多人选择Go的最大理由，因为部署太方便了，所以现在也有很多人用Go开发运维程序。</p>
+<p>4、简单的并发</p>
+<p><strong>并行和异步编程几乎无痛点。</strong>Go 语言的 Goroutine 和 Channel 这两个神器简直就是并发和异步编程的巨大福音。像 C、C++、Java、Python 和 JavaScript 这些语言的并发和异步方式太控制就比较复杂了，而且容易出错，而 Go 解决这个问题非常地优雅和流畅。这对于编程多年受尽并发和异步折磨的编程者来说，完全就是让人眼前一亮的感觉。Go 是一种非常高效的语言，高度支持并发性。Go是为大数据、微服务、并发而生的一种编程语言。</p>
+<ul>
+<li><p>Go 作为一门语言致力于使事情简单化。它并未引入很多新概念，而是聚焦于打造一门简单的语言，它使用起来异常快速并且简单。其唯一的创新之处是 goroutines 和通道。Goroutines 是 Go 面向线程的轻量级方法，而通道是 goroutines 之间通信的优先方式。</p>
+</li>
+<li><p>创建 Goroutines 的成本很低，只需几千个字节的额外内存，正由于此，才使得同时运行数百个甚至数千个 goroutines 成为可能。可以借助通道实现 goroutines 之间的通信。Goroutines 以及基于通道的并发性方法使其非常容易使用所有可用的 CPU 内核，并处理并发的 IO。相较于 Python/Java，在一个 goroutine 上运行一个函数需要最小的代码。</p>
+</li>
+</ul>
+<p><img src="https://voyager-m.gitee.io/picgo/test/golang1.png"></p>
+<p>8、稳定性</p>
+<p>​    Go拥有强大的编译检查、严格的编码规范和完整的软件生命周期工具，具有很强的稳定性，稳定压倒一切。那么为什么Go相比于其他程序会更稳定呢？这是因为Go提供了软件生命周期（开发、测试、部署、维护等等）的各个环节的工具，如go tool、gofmt、go test。</p>
+<h2 id="三、对比其他语言"><a href="#三、对比其他语言" class="headerlink" title="三、对比其他语言"></a>三、对比其他语言</h2><p>Go的很多语言特性借鉴与它的三个祖先：C，Pascal和CSP。Go的语法、数据类型、控制流等继承于C，Go的包、面对对象等思想来源于Pascal分支，而Go最大的语言特色，基于管道通信的协程并发模型，则借鉴于CSP分支。</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/go1.jpeg" alt="go1"></p>
+<h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h3><p>编译语言，速度适中（2.67s），目前的大型网站都是拿java写的，比如淘宝、京东等。主要特点是稳定，开源性好，具有自己的一套编写规范，开发效率适中，目前最主流的语言。</p>
+<blockquote>
+<p>作为编程语言中的大腕。具有最大的知名度和用户群。无论风起云涌，我自巍然不动。他强任他强，清风拂山岗；他横由他横，明月照大江。</p>
+</blockquote>
+<h3 id="c"><a href="#c" class="headerlink" title="c#"></a>c#</h3><p>执行速度快（4.28），学习难度适中，开发速度适中。但是由于c#存在很多缺点，京东、携程等大型网站前身都是用c#开发的，但是现在都迁移到了java上。</p>
+<h3 id="C-C"><a href="#C-C" class="headerlink" title="C/C++"></a>C/C++</h3><p>现存编程语言中的老祖，其他语言皆由此而生。执行速度最快无人能及。但是写起来最为复杂，开发难度大。</p>
+<h3 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h3><p>编程语言中特立独行的傲娇美女。前端处理能力是其它语言无法比拟。发展中的js后端处理能力也是卓越不凡。前后端通吃，舍我其谁？</p>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><p>脚本语言，速度最慢（258s），代码简洁、学习进度短，开发速度快。豆瓣就是拿python写的。Python著名的服务器框架有django，flask。但是python在大型项目上不太稳定，因此有些用python的企业后来迁移到了java上。</p>
+<h3 id="scala"><a href="#scala" class="headerlink" title="scala"></a>scala</h3><p>编译语言，比python快十倍，和java差不多，但是学习进度慢，而且在实际编程中，如果对语言不够精通，很容易造成性能严重下降。，后来比如Yammer就从scala迁移到了java上。微服务框架有lagom等。</p>
+<h3 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h3><p>编程界的小鲜肉。高并发能力无人能及。即具有像Python一样的简洁代码、开发速度，又具有C语言一样的执行效率，优势突出。</p>
+<h2 id="四、最后"><a href="#四、最后" class="headerlink" title="四、最后"></a>四、最后</h2><p>因为Go的语法和Erlang、Python类似，所以我们将这三门语言做个详细的对比。</p>
+<p>相比于Python的40个特性，Go只有31个，可以说Go在语言设计上是相当克制的。比如，它没有隐式的数值转换，没有构造函数和析构函数，没有运算符重载，没有默认参数，也没有继承，没有泛型，没有异常，没有宏，没有函数修饰，更没有线程局部存储。</p>
+<p>但是Go的特点也很鲜明，比如，它拥有协程、自动垃圾回收、包管理系统、一等公民的函数、栈空间管理等。</p>
+<p>Go作为静态类型语言，保证了Go在运行效率、内存用量、类型安全都要强于Python和Erlang。</p>
+<p>Go的数据类型也更加丰富，除了支持表、字典等复杂的数据结构，还支持指针和接口类型，这是Python和Erlang所没有的。特别是接口类型特别强大，它提供了管理类型系统的手段。而指针类型提供了管理内存的手段，这让Go进入底层软件开发提供了强有力的支持。</p>
+<p>Go在面对对象的特性支持上做了很多反思和取舍，它没有类、虚函数、继承、泛型等特性。Go语言中面向对象编程的核心是组合和方法(function)。组合很类似于C语言的struct结构体的组合方式，方法类似于Java的接口(Interface)，但是使用方法上与对象更加解耦，减少了对对象内部的侵入。Erlang则不支持面对对象编程范式，相比而言，Python对面对对象范式的支持最为全面。</p>
+<p>在函数式编程的特性支持上，Erlang作为函数式语言，支持最为全面。但是基本的函数式语言特性，如lambda、高阶函数、curry等，三种语言都支持。</p>
+<p>控制流的特性支持上，三种语言都差不多。Erlang支持尾递归优化，这给它在函数式编程上带来便利。而Go在通过动态扩展协程栈的方式来支持深度递归调用。Python则在深度递归调用上经常被爆栈。</p>
+<p>Go和Erlang的并发模型都来源于CSP，但是Erlang是基于actor和消息传递（mailbox）的并发实现，Go是基于goroutine和管道（channel）的并发实现。不管Erlang的actor还是Go的goroutine，都满足协程的特点：由编程语言实现和调度，切换在用户态完成，创建销毁开销很小。至于Python，其多线程的切换和调度是基于操作系统实现，而且因为GIL的大坑级存在，无法真正做到并行。</p>
+<p>而且从笔者的并发编程体验上看，Erlang的函数式编程语法风格和其OTP behavior框架提供的晦涩的回调（callback）使用方法，对大部分的程序员，如C/C++和Java出身的程序员来说，有一定的入门门槛和挑战。而被称为“互联网时代的C”的Go，其类C的语法和控制流，以及面对对象的编程范式，编程体验则好很多。</p>
+<div class="note success simple"><p>整理此博客只为方便往后翻阅复习，侵删。</p>
+</div></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Voyager-m</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://voyager-m.github.io/posts/60128ef3/">http://voyager-m.github.io/posts/60128ef3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Voyager-m.github.io" target="_blank">毛维杨的Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/GO/">GO</a></div><div class="post_share"><div class="social-share" data-image="https://Voyager-m.gitee.io/picgo/cover/go.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward01.png" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward01.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/fc72cfdc/"><img class="prev-cover" src="https://Voyager-m.gitee.io/picgo/cover/go.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">GO-3-go语言的核心特性</div></div></a></div><div class="next-post pull-right"><a href="/posts/6299afab/"><img class="next-cover" src="https://Voyager-m.gitee.io/picgo/cover/datastruct.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Leetcode-排序-冒泡排序</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/a7360fd9/" title="GO-1-知名编程语言或系统的发展简史"><img class="cover" src="https://Voyager-m.gitee.io/picgo/cover/go.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-28</div><div class="title">GO-1-知名编程语言或系统的发展简史</div></div></a></div><div><a href="/posts/13ea5c5d/" title="GO-2-go语言的前世今生"><img class="cover" src="https://Voyager-m.gitee.io/picgo/cover/go.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-28</div><div class="title">GO-2-go语言的前世今生</div></div></a></div><div><a href="/posts/fc72cfdc/" title="GO-3-go语言的核心特性"><img class="cover" src="https://Voyager-m.gitee.io/picgo/cover/go.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-28</div><div class="title">GO-3-go语言的核心特性</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Voyager-m</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const initData = {
+      el: '#vcomment',
+      appId: 'DE1aONvemsNlJ68Ulgwiu94c-gzGzoHsz',
+      appKey: 'y03Dyd3L8q4s7hSc9CUpoHQh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script></div></body></html>
