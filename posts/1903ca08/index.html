@@ -1,0 +1,339 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>机器学习-特征工程之数值处理（二） | 毛维杨的Blog</title><meta name="keywords" content="机器学习,特征工程,数值处理"><meta name="author" content="Voyager-m"><meta name="copyright" content="Voyager-m"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="在进行机器学习的时候，我们拿到的数据并不能马上使用。数据需要预处理成什么样，这要考虑很多因素，本文介绍了特征工程中的数值处理的相关问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习-特征工程之数值处理（二）">
+<meta property="og:url" content="http://voyager-m.github.io/posts/1903ca08/index.html">
+<meta property="og:site_name" content="毛维杨的Blog">
+<meta property="og:description" content="在进行机器学习的时候，我们拿到的数据并不能马上使用。数据需要预处理成什么样，这要考虑很多因素，本文介绍了特征工程中的数值处理的相关问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://Voyager-m.gitee.io/picgo/cover/ml.png">
+<meta property="article:published_time" content="2020-09-28T13:49:09.000Z">
+<meta property="article:modified_time" content="2020-11-21T12:05:39.613Z">
+<meta property="article:author" content="Voyager-m">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="特征工程">
+<meta property="article:tag" content="数值处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://Voyager-m.gitee.io/picgo/cover/ml.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://voyager-m.github.io/posts/1903ca08/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-11-21 20:05:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="http://voyager-m.gitee.io/picgo/cover/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">20</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">14</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81%E5%A4%84%E7%90%86%E8%AE%A1%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">1、处理计数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%E4%BA%8C%E5%80%BC%E5%8C%96"><span class="toc-number">1.1.</span> <span class="toc-text">1.1二值化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-%E5%8C%BA%E9%97%B4%E9%87%8F%E5%8C%96%EF%BC%88%E5%88%86%E7%AE%B1%EF%BC%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1.1 区间量化（分箱）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81%E5%AF%B9%E6%95%B0%E5%8F%98%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">2、对数变换</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%E5%AF%B9%E6%95%B0%E5%8F%98%E6%8D%A2%E7%9A%84demo"><span class="toc-number">2.1.</span> <span class="toc-text">2.1对数变换的demo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%E6%8C%87%E6%95%B0%E5%8F%98%E6%8D%A2%EF%BC%9A%E5%AF%B9%E6%95%B0%E5%8F%98%E6%8D%A2%E7%9A%84%E6%8E%A8%E5%B9%BF"><span class="toc-number">2.2.</span> <span class="toc-text">2.2指数变换：对数变换的推广</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%E3%80%81%E7%89%B9%E5%BE%81%E7%BC%A9%E6%94%BE-%E5%BD%92%E4%B8%80%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">3、特征缩放&#x2F;归一化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-min-max%E7%BC%A9%E6%94%BE"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 min-max缩放</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%E7%89%B9%E5%BE%81%E6%A0%87%E5%87%86%E5%8C%96-%E6%96%B9%E5%B7%AE%E7%BC%A9%E6%94%BE"><span class="toc-number">3.2.</span> <span class="toc-text">3.2特征标准化&#x2F;方差缩放</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-rho-2-%E5%BD%92%E4%B8%80%E5%8C%96"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 $\rho^2$归一化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%E3%80%81%E4%BA%A4%E4%BA%92%E7%89%B9%E5%BE%81"><span class="toc-number">4.</span> <span class="toc-text">4、交互特征</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%E3%80%81%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9"><span class="toc-number">5.</span> <span class="toc-text">5、特征选择</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://Voyager-m.gitee.io/picgo/cover/ml.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">毛维杨的Blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">机器学习-特征工程之数值处理（二）</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-28T13:49:09.000Z" title="发表于 2020-09-28 21:49:09">2020-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-21T12:05:39.613Z" title="更新于 2020-11-21 20:05:39">2020-11-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="1、处理计数"><a href="#1、处理计数" class="headerlink" title="1、处理计数"></a>1、处理计数</h1><h2 id="1-1二值化"><a href="#1-1二值化" class="headerlink" title="1.1二值化"></a>1.1二值化</h2><p>将大于等于某个次数的设为1，小于这个次数的设为0<br>二值目标变量是一个既简单又强壮的用户偏好衡量指标  </p>
+<p>例子:歌曲收听次数及人数的原始分布如下，会发现原始的收听次数并不是衡量用户喜好的强壮指标，因此可以进行二值化，如果用户收听了某首歌曲至少一次，那么就认为该用户喜欢该歌曲</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112101.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">listen_count = pd.read_csv(<span class="string">&#x27;millionsong/train_triplets.txt.zip&#x27;</span>,header=<span class="literal">None</span>, delimiter=<span class="string">&#x27;\t&#x27;</span>)<span class="comment"># 表中包含有形式为“用户-歌曲-收听次数”的三元组。只包含非零收听次数。 # 因此，要二值化收听次数，只需将整个收听次数列设为1。</span></span><br><span class="line">listen_count[<span class="number">2</span>] = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-1-1-区间量化（分箱）"><a href="#1-1-1-区间量化（分箱）" class="headerlink" title="1.1.1 区间量化（分箱）"></a>1.1.1 区间量化（分箱）</h3><p>区间量化可以将连续型数值映射为离散型数值，可以将这种离散型数值看作一种有序的分箱序列，它表示的是对密度的测量  </p>
+<p>为了对数据进行区间量化，必须确定每个分箱的宽度。有两种确定分箱宽度的方法:固定宽度分箱和自适应分箱  </p>
+<p>例子：商家点评数量数据，点评数量及用户量的分布如下，会发现大多数商家的点评数量很少，但有些商家具有几千条点评，原始的点评数量横跨了若干个数量，一种解决方法是对计数值进行区间量化，然后使用量化后的结果。换言之，将点评数量分到多个箱子里面，去掉实际的计数值</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112102.png"></p>
+<p><strong>（1）固定宽度分箱</strong></p>
+<p>通过固定宽度分箱，每个分箱中会包含一个具体范围内的数值。这些范围可以人工定制， 也可以通过自动分段来生成，它们可以是线性的，也可以是指数性的  </p>
+<p>例如，可以按 10 年为一段来将人员划分到多个年龄范围中:0<del>9 岁的在分箱 1 中、10</del>19 岁的在分箱 2 中  </p>
+<p>要将计数值映射到分箱，只需用计数值除以分箱的宽度，然后取整数部分  </p>
+<p>例子：通过固定宽度分箱对计数值进行区间量化  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">small_counts = np.random.randint(<span class="number">0</span>, <span class="number">100</span>, <span class="number">20</span>)<span class="comment"># 生成20个随机整数，均匀分布在0~99之间</span></span><br><span class="line">small_counts<span class="comment"># 通过除法映射到间隔均匀的分箱中，每个分箱的取值范围都是0~9</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112103.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.floor_divide(small_counts, <span class="number">10</span>)<span class="comment">#通过除法映射到间隔均匀的分箱中，每个分箱的取值范围都是0~9</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112104.png"></p>
+<p>当数值横跨多个数量级时，最好按照 10 的幂(或任何常数的幂)来进行分组，如：0-9、 10-99、100-999、1000-9999  </p>
+<p>这时分箱宽度是呈指数增长的，要将计数值映射到分箱，需要取计数值的对数。指数宽度分箱与对数变换的关系非常紧密  </p>
+<p>例子：通过固定宽度分箱对计数值进行区间量化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">large_counts = [<span class="number">296</span>, <span class="number">8286</span>, <span class="number">64011</span>, <span class="number">80</span>, <span class="number">3</span>, <span class="number">725</span>, <span class="number">867</span>, <span class="number">2215</span>, <span class="number">7689</span>, <span class="number">11495</span>, <span class="number">91897</span>,<span class="number">44</span>, <span class="number">28</span>, <span class="number">7971</span>, <span class="number">926</span>, <span class="number">122</span>, <span class="number">22222</span>]<span class="comment"># 横跨若干数量级的计数值数组</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112105.png"></p>
+<p><strong>（2）分位数分箱</strong>  </p>
+<p>如果计数值中有比较大的缺口，就会产生很多没有任何数据的空箱子。根据数据的分布特点，进行自适应的箱体定位，可以使用数据分布的分位数来实现，分位数是可以将数据划分为相等的若干份数的值，如：中位数(即二分位数)、四分位数、十分位数等  </p>
+<p>例子：计算 Yelp 商家点评数量的十分位数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在直方图上画出十分位数</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>deciles = biz_df[<span class="string">&#x27;review_count&#x27;</span>].quantile([<span class="number">.1</span>, <span class="number">.2</span>, <span class="number">.3</span>, <span class="number">.4</span>, <span class="number">.5</span>, <span class="number">.6</span>, <span class="number">.7</span>, <span class="number">.8</span>, <span class="number">.9</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>deciles</span><br><span class="line"><span class="number">0.1</span> <span class="number">3.0</span></span><br><span class="line"><span class="number">0.2</span> <span class="number">4.0</span></span><br><span class="line"><span class="number">0.3</span> <span class="number">5.0</span></span><br><span class="line"><span class="number">0.4</span> <span class="number">6.0</span></span><br><span class="line"><span class="number">0.5</span> <span class="number">8.0</span></span><br><span class="line"><span class="number">0.6</span> <span class="number">12.0</span></span><br><span class="line"><span class="number">0.7</span> <span class="number">17.0</span></span><br><span class="line"><span class="number">0.8</span> <span class="number">28.0</span></span><br><span class="line"><span class="number">0.9</span> <span class="number">58.0</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112106.png"></p>
+<p>要计算分位数并将数据映射到分位数分箱中，可以使用 Pandas 库，如下例所示。</p>
+<p>pandas.DataFrame.quantile 可以计算分位数  </p>
+<p>pandas.Series.quantile 可以计算分位数  </p>
+<p>pandas.qcut 可以将数据映射为所需的分位数值  </p>
+<p>例子：通过分位数对计数值进行分箱  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd <span class="comment"># 继续使用例4中的large_couts</span></span><br><span class="line">pd.qcut(large_counts, <span class="number">4</span>, labels=<span class="literal">False</span>)<span class="comment"># 将计数值映射为分位数</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112107.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 计算实际的分位数值</span></span><br><span class="line">large_counts_series = pd.Series(large_counts) </span><br><span class="line">large_counts_series.quantile([<span class="number">0.25</span>, <span class="number">0.5</span>, <span class="number">0.75</span>])</span><br></pre></td></tr></table></figure>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112108.png"></p>
+<h1 id="2、对数变换"><a href="#2、对数变换" class="headerlink" title="2、对数变换"></a>2、对数变换</h1><p>对数函数压缩高值区间并扩展低值区间<br><img src="https://voyager-m.gitee.io/picgo/test/112109.png"></p>
+<p>例子：对数变换前后的点评数量分布可视化。  </p>
+<p>分析：比较对数变换前后的 Yelp 商家点评数量的直方图，如下所示，两幅图中的 y 轴都是正常(线性)标度。在下方的图形中，区间 (0.5, 1] 中的箱体间隔很大，是因为在 1 和 10 之间只有 10 个可能的整数计数值。请注意，初始的点评数量严重集中在低计数值区域，但有些异常值跑到了 4000 之外。经过对数变换之后，直方图在低计数值的集中趋势被减弱了，在 x 轴上的分布更均匀了一些。  </p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112110.png"></p>
+<h2 id="2-1对数变换的demo"><a href="#2-1对数变换的demo" class="headerlink" title="2.1对数变换的demo"></a>2.1对数变换的demo</h2><p>代码demo：使用对数变换后的 Yelp 点评数量预测商家的平均评分  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用Yelp点评数据框，计算Yelp点评数量的对数变换值</span></span><br><span class="line"><span class="comment"># 注意，我们为原始点评数量加1，以免当点评数量为0时，对数运算结果得到负无穷大。 </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>biz_df[<span class="string">&#x27;log_review_count&#x27;</span>] = np.log10(biz_df[<span class="string">&#x27;review_count&#x27;</span>] + <span class="number">1</span>)</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">代码demo：使用在线新闻流行度数据集中经对数变换后的单词个数预测文章流行度  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"><span class="comment"># 从UCI下载在线新闻流行度数据集，对n_tokens_content特征进行对数变换，这个特征表示的是一篇新闻文章中的单词 # (token)数量。</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[<span class="string">&#x27;log_n_tokens_content&#x27;</span>] = np.log10(df[<span class="string">&#x27;n_tokens_content&#x27;</span>] + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从下图可以看出，对数变换重组了 x 轴，对于那些目标变量值异常巨大(&gt;200000 个分享)的文章，对数变换将它们更多地拉向了 x 轴的右侧，这就为线性模型在输入特征空间的低值端争取了更多的“呼吸空间”。 如果不进行对数变换(下面上方的图)，模型就会面临更大的压力，要在输入变化很小的情况下去拟合变化非常大的目标值。</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112111.png"></p>
+<h2 id="2-2指数变换：对数变换的推广"><a href="#2-2指数变换：对数变换的推广" class="headerlink" title="2.2指数变换：对数变换的推广"></a>2.2指数变换：对数变换的推广</h2><p>指数变换是个变换族，对数变换只是它的一个特例。用统计学术语来说，它们都是方差稳定化变换  </p>
+<p>泊松分布是一种 重尾分布，它的方差等于它的均值。因此，它的质心越大，方差就越大，重尾程度也越 大。指数变换可以改变变量的分布，使得方差不再依赖于均值  </p>
+<p>例如，假设一个随机变量X 具有泊松分布，如果通过取它的平方根对它进行变换，那么它的平方根的方差就近似是一 个常数，而不是与均值相等。  </p>
+<p>下图为泊松分布的粗略表示，这是一个方差随均值变大的分布示例。它表示出了 λ 对泊松分布的影响，λ 表示泊松分布的均值。当 λ 变大时，不仅整个分 布模式向右移动，质量也更加分散，方差随之变大。  </p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112112.png"></p>
+<p>平方根变换和对数变换都可以简单推广为 Box-Cox 变换  </p>
+<p>下图展示了 λ = 0(对数变换)、λ = 0.25、λ = 0.5(平方根变换的一种缩放和平移形式)、 λ = 0.75 和 λ = 1.5 时的 Box-Cox 变换。λ 小于 1 时，可以压缩高端值;λ 大于 1 时，起的作 用是相反的。  </p>
+<p>只有当数据为正时，Box-Cox 公式才有效。对于非正数据，我们可以加上一个固定的常数， 对数据进行平移。  </p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112113.png"></p>
+<p>代码demo：对 Yelp 商家点评数量的 Box-Cox 变换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> scipy <span class="keyword">import</span> stats</span><br><span class="line"><span class="comment"># 接上一个例子，假设biz_df包含Yelp商家点评数据。</span></span><br><span class="line"><span class="comment"># Box-Cox变换假定输入数据都是正的。</span></span><br><span class="line"><span class="comment"># 检查数据的最小值以确定满足假定。</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>biz_df[<span class="string">&#x27;review_count&#x27;</span>].min()</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="comment"># 设置输入参数λ为0，使用对数变换(没有固定长度的位移)。</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>rc_log = stats.boxcox(biz_df[<span class="string">&#x27;review_count&#x27;</span>], lmbda=<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 默认情况下，SciPy在实现Box-Cox转换时，会找出使得输出最接近于正态分布的λ参数。 </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>rc_bc, bc_params = stats.boxcox(biz_df[<span class="string">&#x27;review_count&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bc_params</span><br><span class="line"><span class="number">-0.4106510862321085</span></span><br></pre></td></tr></table></figure>
+<p>下面为Box-Cox 变换后的 Yelp 商家点评数量直方图(下)，以及初始点评数量直方图(上)和对数变换后的点评数量直方图(中)</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112114.png"></p>
+<p>概率图是一种非常简单的可视化方法，用以比较数据的实际分布与理论分布， 它本质上是一种表示实测分位数和理论分位数的关系的散点图。  </p>
+<p>下图展示了 Yelp 点评 数据的两种概率图，分别是初始点评数量、变换后点评数量的概率图，并和正态分布进行了对比  </p>
+<p>因为观测数据肯定是正的，而高斯分布可以是负的，所以在负数端，实测分位数和理论分位数不可能匹配。因此，我们只关注正数部分。于是，我们可以看出与正态分布相比，初始的点评数量具有明显的重尾特征。(排序后的值可以达到 4000 以 上，而理论分位数只能到达 4 左右。)普通对数变换和最优 Box-Cox 变换都可以将正尾部 拉近正态分布。  </p>
+<p>根据图形明显可以看出，相比对数变换，最优 Box-Cox 变换对尾部的压缩更强，它使得尾部变平，跑到了红色等值斜线下面。  </p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112115.png"></p>
+<h1 id="3、特征缩放-归一化"><a href="#3、特征缩放-归一化" class="headerlink" title="3、特征缩放/归一化"></a>3、特征缩放/归一化</h1><p>有些特征的值是有界限的，比如经度和纬度  </p>
+<p>但有些数值型特征可以无限制地增加，比如计数值  </p>
+<p>有些模型是输入的平滑函数，比如线性回归模型、逻辑回归模型或包含矩阵的模型，它们会受到输入尺度的影响。  </p>
+<p>相反，那些基于树的模型则根本不在乎输入尺度有多 大。</p>
+<p>如果模型对输入特征的尺度很敏感，就需要进行特征缩放。</p>
+<p>特征缩放会改变特征的尺度，有些人将其称为特征归一化  </p>
+<p>特征缩放通常对每个特征独立进行  </p>
+<h2 id="3-1-min-max缩放"><a href="#3-1-min-max缩放" class="headerlink" title="3.1 min-max缩放"></a>3.1 min-max缩放</h2><p>令 x 是一个独立的特征值(即某个数据点中的特征值)，min(x) 和 max(x) 分别为这个特征 在整个数据集中的最小值和最大值。min-max 缩放可以将所有特征值压缩(或扩展)到 [0, 1] 区间中</p>
+<p>min-max 缩放的公式如下：</p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112116.png"></p>
+<h2 id="3-2特征标准化-方差缩放"><a href="#3-2特征标准化-方差缩放" class="headerlink" title="3.2特征标准化/方差缩放"></a>3.2特征标准化/方差缩放</h2><p>特征标准化:它先减去特征的均值(对所有数据点)，再除以方差，因此又称为方差缩放。缩放后的特征均值为 0，方差为 1。如果初始特征服从高斯分布，那么缩放后的特征也服从高斯分布。  </p>
+<p>特征标准化的公式如下：</p>
+<p> <img src="https://voyager-m.gitee.io/picgo/test/112117.png"><br> <img src="https://voyager-m.gitee.io/picgo/test/112118.png"></p>
+<h2 id="3-3-rho-2-归一化"><a href="#3-3-rho-2-归一化" class="headerlink" title="3.3 $\rho^2$归一化"></a>3.3 $\rho^2$归一化</h2><p> 这种归一化技术是将初始特征值除以一个称为 $\rho^2$范数的量，$\rho^2$范数又称为欧几里得范数，它的定义如下:<br> <img src="https://voyager-m.gitee.io/picgo/test/112119.png">  </p>
+<p> $\rho^2$范数是坐标空间中向量长度的一种测量。它的定义可以根据著名的毕达哥拉斯定理(给 定一个直角三角形两条直角边的长度，可以求出斜边的长度)导出:  </p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112120.png">  </p>
+<p>范数先对所有数据点中该特征的值的平方求和，然后算出平方根。经过 l^2 归一化后，特征列的范数就是1</p>
+<p>  <img src="https://voyager-m.gitee.io/picgo/test/112121.png"></p>
+<p>不论使用何种缩放方法，特征缩放总是将特征除以一个常数(称为归一化常数)。因此，它不会改变单特征分布的形状  </p>
+<p>代码demo：特征缩放示例  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加载在线新闻流行度数据集</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df = pd.read_csv(<span class="string">&#x27;OnlineNewsPopularity.csv&#x27;</span>, delimiter=<span class="string">&#x27;, &#x27;</span>)</span><br><span class="line"><span class="comment"># 查看原始数据——文章中的单词数量</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[<span class="string">&#x27;n_tokens_content&#x27;</span>].as_matrix()</span><br><span class="line">array([ <span class="number">219.</span>, <span class="number">255.</span>, <span class="number">211.</span>, ..., <span class="number">442.</span>, <span class="number">682.</span>, <span class="number">157.</span>])</span><br><span class="line"><span class="comment"># min-max缩放</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[<span class="string">&#x27;minmax&#x27;</span>] = preproc.minmax_scale(df[[<span class="string">&#x27;n_tokens_content&#x27;</span>]]) &gt;&gt;&gt; df[<span class="string">&#x27;minmax&#x27;</span>].as_matrix()</span><br><span class="line">array([ <span class="number">0.02584376</span>, <span class="number">0.03009205</span>, <span class="number">0.02489969</span>, ..., <span class="number">0.05215955</span>,<span class="number">0.08048147</span>,  <span class="number">0.01852726</span>])</span><br><span class="line"><span class="comment"># 标准化——注意根据标准化的定义，有些结果会是负的</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[<span class="string">&#x27;standardized&#x27;</span>] = preproc.StandardScaler().fit_transform(df[[<span class="string">&#x27;n_tokens_ content&#x27;</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[<span class="string">&#x27;standardized&#x27;</span>].as_matrix()</span><br><span class="line">array([<span class="number">-0.69521045</span>, <span class="number">-0.61879381</span>, <span class="number">-0.71219192</span>, ..., <span class="number">-0.2218518</span> ,<span class="number">0.28759248</span>, <span class="number">-0.82681689</span>])</span><br><span class="line"><span class="comment"># L2-归一化</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[<span class="string">&#x27;l2_normalized&#x27;</span>] = preproc.normalize(df[[<span class="string">&#x27;n_tokens_content&#x27;</span>]], axis=<span class="number">0</span>) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[<span class="string">&#x27;l2_normalized&#x27;</span>].as_matrix()</span><br><span class="line">array([ <span class="number">0.00152439</span>, <span class="number">0.00177498</span>, <span class="number">0.00146871</span>, ..., <span class="number">0.00307663</span>, <span class="number">0.0047472</span> ,  <span class="number">0.00109283</span>])</span><br></pre></td></tr></table></figure>
+
+
+<p>下图为原始及缩放后的新闻文章单词数量。注意只有 x 轴的尺度发生了变化，特征缩放后的分布 形状保持不变  </p>
+<p><img src="https://voyager-m.gitee.io/picgo/test/112122.png"></p>
+<p>当一组输入特征的尺度相差很大时，就需要进行特征缩放。例如，一个人气很高的商业网 站的日访问量可能是几十万次，而实际购买行为可能只有几千次。如果这两个特征都被模 型所使用，那么模型就需要在确定如何使用它们时先平衡一下尺度。如果输入特征的尺度 差别非常大，就会对模型训练算法带来数值稳定性方面的问题。在这种情况下，就应该对 特征进行标准化。  </p>
+<h1 id="4、交互特征"><a href="#4、交互特征" class="headerlink" title="4、交互特征"></a>4、交互特征</h1><p>两个特征的乘积可以组成一对简单的交互特征  </p>
+<p>这种相乘关系可以用逻辑操作符 AND 来 类比，它可以表示出由一对条件形成的结果:“该购买行为来自于邮政编码为 98121 的地区”AND“用户年龄在 18 和 35 岁之间”。  </p>
+<p>例子： UCI 在线新闻流行度数据集中的交互特征对来预测每篇新闻文章的分享数量。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sklearn.preprocessing <span class="keyword">as</span> preproc</span><br><span class="line"><span class="comment"># 假设df是一个Pandas数据框，其中包含了UCI在线新闻流行度数据集 &gt;&gt;&gt; df.columns</span></span><br><span class="line">Index([<span class="string">&#x27;url&#x27;</span>, <span class="string">&#x27;timedelta&#x27;</span>, <span class="string">&#x27;n_tokens_title&#x27;</span>, <span class="string">&#x27;n_tokens_content&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;n_unique_tokens&#x27;</span>, <span class="string">&#x27;n_non_stop_words&#x27;</span>, <span class="string">&#x27;n_non_stop_unique_tokens&#x27;</span>,<span class="string">&#x27;num_hrefs&#x27;</span>, <span class="string">&#x27;num_self_hrefs&#x27;</span>, <span class="string">&#x27;num_imgs&#x27;</span>, <span class="string">&#x27;num_videos&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;average_token_length&#x27;</span>, <span class="string">&#x27;num_keywords&#x27;</span>, <span class="string">&#x27;data_channel_is_lifestyle&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;data_channel_is_entertainment&#x27;</span>, <span class="string">&#x27;data_channel_is_bus&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;data_channel_is_socmed&#x27;</span>, <span class="string">&#x27;data_channel_is_tech&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;data_channel_is_world&#x27;</span>, <span class="string">&#x27;kw_min_min&#x27;</span>, <span class="string">&#x27;kw_max_min&#x27;</span>, <span class="string">&#x27;kw_avg_min&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;kw_min_max&#x27;</span>, <span class="string">&#x27;kw_max_max&#x27;</span>, <span class="string">&#x27;kw_avg_max&#x27;</span>, <span class="string">&#x27;kw_min_avg&#x27;</span>, <span class="string">&#x27;kw_max_avg&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;kw_avg_avg&#x27;</span>, <span class="string">&#x27;self_reference_min_shares&#x27;</span>, <span class="string">&#x27;self_reference_max_shares&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;self_reference_avg_sharess&#x27;</span>, <span class="string">&#x27;weekday_is_monday&#x27;</span>, <span class="string">&#x27;weekday_is_tuesday&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;weekday_is_wednesday&#x27;</span>, <span class="string">&#x27;weekday_is_thursday&#x27;</span>, <span class="string">&#x27;weekday_is_friday&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;weekday_is_saturday&#x27;</span>, <span class="string">&#x27;weekday_is_sunday&#x27;</span>, <span class="string">&#x27;is_weekend&#x27;</span>, <span class="string">&#x27;LDA_00&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;LDA_01&#x27;</span>, <span class="string">&#x27;LDA_02&#x27;</span>, <span class="string">&#x27;LDA_03&#x27;</span>, <span class="string">&#x27;LDA_04&#x27;</span>, <span class="string">&#x27;global_subjectivity&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;global_sentiment_polarity&#x27;</span>, <span class="string">&#x27;global_rate_positive_words&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;global_rate_negative_words&#x27;</span>, <span class="string">&#x27;rate_positive_words&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;rate_negative_words&#x27;</span>, <span class="string">&#x27;avg_positive_polarity&#x27;</span>, <span class="string">&#x27;min_positive_polarity&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;max_positive_polarity&#x27;</span>, <span class="string">&#x27;avg_negative_polarity&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;min_negative_polarity&#x27;</span>, <span class="string">&#x27;max_negative_polarity&#x27;</span>, <span class="string">&#x27;title_subjectivity&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;title_sentiment_polarity&#x27;</span>, <span class="string">&#x27;abs_title_subjectivity&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;abs_title_sentiment_polarity&#x27;</span>, <span class="string">&#x27;shares&#x27;</span>],</span><br><span class="line">           dtype=<span class="string">&#x27;object&#x27;</span>)</span><br><span class="line"><span class="comment"># 选择与内容有关的特征作为模型的单一特征，忽略那些衍生特征 </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>features = [<span class="string">&#x27;n_tokens_title&#x27;</span>,<span class="string">&#x27;n_tokens_content&#x27;</span>,<span class="string">&#x27;n_unique_tokens&#x27;</span>, <span class="string">&#x27;n_non_stop_words&#x27;</span>, <span class="string">&#x27;n_non_stop_unique_tokens&#x27;</span>,<span class="string">&#x27;num_hrefs&#x27;</span>, <span class="string">&#x27;num_self_hrefs&#x27;</span>, <span class="string">&#x27;num_imgs&#x27;</span>, <span class="string">&#x27;num_videos&#x27;</span>, <span class="string">&#x27;average_token_length&#x27;</span>,<span class="string">&#x27;num_keywords&#x27;</span>,<span class="string">&#x27;data_channel_is_lifestyle&#x27;</span>,<span class="string">&#x27;data_channel_is_entertainment&#x27;</span>, <span class="string">&#x27;data_channel_is_bus&#x27;</span>, <span class="string">&#x27;data_channel_is_socmed&#x27;</span>, <span class="string">&#x27;data_channel_is_tech&#x27;</span>, <span class="string">&#x27;data_channel_is_world&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X = df[features]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = df[[<span class="string">&#x27;shares&#x27;</span>]]</span><br><span class="line"><span class="comment"># 创建交互特征对，跳过固定偏移项</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X2 = preproc.PolynomialFeatures(include_bias=<span class="literal">False</span>).fit_transform(X) &gt;&gt;&gt; X2.shape</span><br><span class="line">(<span class="number">39644</span>, <span class="number">170</span>)</span><br><span class="line"><span class="comment"># 为两个特征集创建训练集和测试集</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X1_train, X1_test, X2_train, X2_test, y_train, y_test = train_test_split(X, X2, y, test_size=<span class="number">0.3</span>, random_state=<span class="number">123</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">evaluate_feature</span>(<span class="params">X_train, X_test, y_train, y_test</span>):</span></span><br><span class="line">     ...     <span class="string">&quot;&quot;&quot;Fit a linear regression model on the training set and</span></span><br><span class="line"><span class="string">     ...     score on the test set&quot;&quot;&quot;</span></span><br><span class="line">     ...     model = linear_model.LinearRegression().fit(X_train, y_train)</span><br><span class="line">     ...     r_score = model.score(X_test, y_test)</span><br><span class="line">     ...     <span class="keyword">return</span> (model, r_score)</span><br><span class="line"><span class="comment"># 在两个特征集上训练模型并比较R方分数</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(m1, r1) = evaluate_feature(X1_train, X1_test, y_train, y_test)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(m2, r2) = evaluate_feature(X2_train, X2_test, y_train, y_test) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">&quot;R-squared score with singleton features: %0.5f&quot;</span> % r1) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">&quot;R-squared score with pairwise features: %0.10f&quot;</span> % r2) </span><br><span class="line">R-squared score <span class="keyword">with</span> singleton features: <span class="number">0.00924</span></span><br><span class="line">R-squared score <span class="keyword">with</span> pairwise features: <span class="number">0.0113276523</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>注：  </p>
+<p>交互特征的构造非常简单，使用起来却代价不菲。如果线性模型中包含有交互特征对，那它的训练时间和评分时间就会从 O(n) 增加到 O(n2)，其中 n 是单一特征的数量  </p>
+<p>有若干种方法可以绕过高阶交互特征所带来的计算成本。我们可以在构造出所有交互特征之后再执行特征选择，或者，也可以更加精心地设计出少量复杂特征。</p>
+<h1 id="5、特征选择"><a href="#5、特征选择" class="headerlink" title="5、特征选择"></a>5、特征选择</h1><p>特征选择技术可以精简掉无用的特征，以降低最终模型的复杂性，它的最终目的是得到一个简约模型，在不降低预测准确率或对预测准确率影响不大的情况下提高计算速度  </p>
+<p>特征选择不是为了减 少训练时间，而是为了减少模型评分时间  </p>
+<p>特征选择技术可以分为以下三类：  </p>
+<p><strong>（1） 过滤</strong>  </p>
+<p>过滤技术对特征进行预处理，以除去那些不太可能对模型有用处的特征。例如，我们可以计算出每个特征与响应变量之间的相关性或互信息，然后过滤掉那些在某个阈值之下 的特征。过滤技术的成本比下面描述的打包技 术低廉得多，但它们没有考虑我们要使用的模型，因此，它们有可能无法为模型选择出正确的特征。我们最好谨慎地使用预过滤技术，以免在有用特征进入到模型训练阶段之 前不经意地将其删除。  </p>
+<p><strong>（2）打包方法</strong>  </p>
+<p>这些技术的成本非常高昂，但它们可以试验特征的各个子集，这意味着我们不会意外地删除那些本身不提供什么信息但和其他特征组合起来却非常有用的特征。打包方法将模型视为一个能对推荐的特征子集给出合理评分的黑盒子。它们使用另外一种方法迭代地对特征子集进行优化。</p>
+<p><strong>（3）嵌入式方法</strong>   </p>
+<p>这种方法将特征选择作为模型训练过程的一部分。例如，特征选择是决策树与生俱来的 一种功能，因为它在每个训练阶段都要选择一个特征来对树进行分割。另一个例子是 l1 正则项，它可以添加到任意线性模型的训练目标中。l1 正则项鼓励模型使用更少的特 征，而不是更多的特征，所以又称为模型的稀疏性约束。嵌入式方法将特征选择整合为 模型训练过程的一部分。它们不如打包方法强大，但成本也远不如打包方法那么高。与过滤技术相比，嵌入式方法可以选择出特别适合某种模型的特征。从这个意义上说，嵌 入式方法在计算成本和结果质量之间实现了某种平衡。</p>
+<p>参考：<br>《精通特征工程》爱丽丝·郑·阿曼达·卡萨丽<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0320a7d84649">小小孩儿的碎碎念</a></p>
+<p>整理于2020年11月21日</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Voyager-m</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://voyager-m.github.io/posts/1903ca08/">http://voyager-m.github.io/posts/1903ca08/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Voyager-m.github.io" target="_blank">毛维杨的Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">特征工程</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%80%BC%E5%A4%84%E7%90%86/">数值处理</a></div><div class="post_share"><div class="social-share" data-image="https://Voyager-m.gitee.io/picgo/cover/ml.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward01.png" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward01.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" target="_blank"><img class="post-qr-code-img" src="https://Voyager-m.gitee.io/picgo/test/reward02.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/ac797bd6/"><img class="prev-cover" src="https://Voyager-m.gitee.io/picgo/cover/go.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">GO-5-go语言能做什么事情</div></div></a></div><div class="next-post pull-right"><a href="/posts/c37fef3/"><img class="next-cover" src="https://Voyager-m.gitee.io/picgo/cover/Git.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">如何将本地项目上传gitee/github</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/d3f8390a/" title="机器学习-特征工程初识（一）"><img class="cover" src="https://Voyager-m.gitee.io/picgo/cover/ml.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-19</div><div class="title">机器学习-特征工程初识（一）</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Voyager-m</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    const initData = {
+      el: '#vcomment',
+      appId: 'DE1aONvemsNlJ68Ulgwiu94c-gzGzoHsz',
+      appKey: 'y03Dyd3L8q4s7hSc9CUpoHQh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script></div></body></html>
